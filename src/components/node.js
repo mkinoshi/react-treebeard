@@ -79,18 +79,19 @@ class TreeNode extends React.Component {
 
     renderHeader(decorators, animations) {
         const {node, style} = this.props;
-
+        console.log(this.props);
         return (
             <NodeHeader animations={animations}
                         decorators={decorators}
                         node={Object.assign({}, node)}
                         onClick={this.onClick}
+                        onClickSelect={this.props.select}
                         style={style}/>
         );
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style} = this.props;
+        const {animations, decorators: propDecorators, node, style, add, select, enterNewTopic } = this.props;
 
         if (node.loading) {
             return this.renderLoading(decorators);
@@ -108,9 +109,21 @@ class TreeNode extends React.Component {
                                                           animations={animations}
                                                           decorators={propDecorators}
                                                           key={child.id || index}
+                                                          select={select}
+                                                          enterNewTopic={enterNewTopic}
+                                                          add={add}
                                                           node={child}
                                                           style={style}/>
                 )}
+                <div className="ListPreview-topic-footer">
+                    <i className="material-icons" onClick={() => add(node)}>add</i>
+                    {node.inputOpen ?
+                        <div className="ListPreview-new-topic-container">
+                            <input className="new-topic-input" placeholder="New Topic" id="new-topic"/> 
+                            <i className="material-icons" onClick={() => enterNewTopic(node)}>done</i>
+                        </div> :
+                        null}
+                </div>
             </ul>
         );
     }
@@ -144,7 +157,10 @@ TreeNode.propTypes = {
         PropTypes.object,
         PropTypes.bool
     ]).isRequired,
-    onToggle: PropTypes.func
+    onToggle: PropTypes.func,
+    add: PropTypes.func,
+    select: PropTypes.func,
+    enterNewTopic: PropTypes.func,
 };
 
 export default TreeNode;
