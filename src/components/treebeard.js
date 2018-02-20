@@ -17,6 +17,7 @@ class TreeBeard extends React.Component {
         if (!Array.isArray(data)) {
             data = [data];
         }
+        // add and select for button actions
         return (
             <ul style={style.tree.base}
                 ref={ref => this.treeBaseRef = ref}>
